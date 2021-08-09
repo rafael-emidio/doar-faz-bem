@@ -32,6 +32,10 @@ routes.get('/', (req, res) => {
 // ======================= Login ==============================
 routes.post('/login', UsuarioController.login);
 
+routes.post('/logout', verifyJWT, (req, res) => {
+    UsuarioController.logout(req, res)
+})
+
 // ======================= Usuarios ==============================
 routes.get('/usuarios', UsuarioController.listar);
 
