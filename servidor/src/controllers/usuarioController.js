@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario')
 const Sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
+
 const sequelize = new Sequelize('historias', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
@@ -14,6 +15,13 @@ const sequelize = new Sequelize('historias', 'root', '', {
     },
 });
 
+function erro(req, res, msg) {
+    return res.status(400).json({
+        "codigo": '0',
+        "mensagem": msg
+    })
+}
+
 
 module.exports = {
     async listar(req, res) {
@@ -24,7 +32,7 @@ module.exports = {
     async editar(req, res) {
         //const {id} = req.params;
         const { id } = req.body
-        const { nome, cpf, senha, email, telefone, endereco, tipo, tip_doacao } = req.body;
+        const { nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao } = req.body;
         const usuario = await Usuario.findByPk(id);
 
         usuario.nome = nome
@@ -34,15 +42,15 @@ module.exports = {
         usuario.telefone = telefone
         usuario.endereco = endereco
         usuario.tipo = tipo
-        usuario.tip_doacao = tip_doacao
+        usuario.tipo_doacao = tipo_doacao
 
         const usuario_response = await usuario.save()
         return res.json(usuario_response)
     },
 
     async cadastrar(req, res) {
-        const { nome, cpf, senha, email, telefone, endereco, tipo, tip_doacao } = req.body;
-        const usuario = await Usuario.create({ nome, cpf, senha, email, telefone, endereco, tipo, tip_doacao })
+        const { nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao } = req.body;
+        const usuario = await Usuario.create({ nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao })
         return res.json(usuario)
     },
 
@@ -62,13 +70,28 @@ module.exports = {
 
     async login(req, res) {
         const { cpf, senha } = req.body
-        const usuario = await sequelize.query("SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = '" + senha + "';");
-        // if(usuario){
-        //     let token = jwt.sign({
+        const usuario = await sequelize.query("SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = '" + senha + "';", { type: sequelize.QueryTypes.SELECT });
+        let token = '';
 
-        //     })
-        // }
-        return res.json(usuario)
+        if (usuario.length == 0)
+            return erro(req, res, "Falha ao autenticar");
+
+
+        token = jwt.sign({ ...usuario['id'] }, 'segredo', {
+            expiresIn: 86400 // expires in 1 day
+        });
+
+        return res.status(200).json({
+            "token": token,
+            "usuario": usuario
+        })
     },
 
+    async logout(req, res) {
+        
+    },
+
+
+
 }
+
