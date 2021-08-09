@@ -10,7 +10,7 @@ angular.module('appIndex', ['ui-notification'])
       console.log(server);
     }
     init();
-    
+
     $scope.urlLogout = server+'/logout';
 
    $scope.logout = function(){
@@ -26,7 +26,7 @@ angular.module('appIndex', ['ui-notification'])
 
           console.log(response.status);
 
-          if (response.status==200){
+          if (response.status==204){
             Notification.success({message: 'Logout efetuado com sucesso!', delay: 1500});
             
           }else{

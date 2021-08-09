@@ -157,10 +157,7 @@ module.exports = {
     },
 
     async logout(req, res) {
-        return res.status(200).json({
-            "codigo": 1,
-            "mensagem": 'usuario deslogado.'
-        })
+        return res.status(204).send()
     },
 
 
