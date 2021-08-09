@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 
-const sequelize = new Sequelize('doar-faz-bem', 'root', '', {
+const sequelize = new Sequelize('doarfazbem', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
 

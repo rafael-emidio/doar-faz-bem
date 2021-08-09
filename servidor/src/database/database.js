@@ -7,7 +7,7 @@ const connection = new Squelize({
     host: 'localhost',
     username: 'root',
     password: '',
-    database: 'doar-faz-bem',
+    database: 'doarfazbem',
     define: {
         timestamps: false,
     },

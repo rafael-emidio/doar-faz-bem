@@ -13,8 +13,8 @@ class Usuario extends Model {
       tipo_doacao: DataTypes.STRING,
     }, {
       sequelize: connection,
-      modelName: 'Usuario',
-      tableName: 'Usuario'
+      modelName: 'usuario',
+      tableName: 'usuario'
     })
   }
 
