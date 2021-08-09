@@ -11,20 +11,21 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link href="js/libs/angular-ui-notification.css" rel="stylesheet" />
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/903500f45c.js" crossorigin="anonymous"></script>
-    <link rel="icon" type="image/png" href="icon.png">
-    <title>Cadastro de usuário - Doar Faz Bem</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <title>Receptor - Doar Faz Bem</title>
     <style type="text/css">
-    	body{
-	    	background-position: center;
-	  		background-repeat: no-repeat;
-  			background-size: cover;
-  			background-attachment:fixed;
-    	}
-    	.btn-primary{
-    		font-size: 24px!important;
-    	}
+      body{
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment:fixed;
+      }
+      .btn-primary{
+        font-size: 24px!important;
+      }
       .text-center:last-child{
           margin-bottom: 70px;
       }
@@ -37,7 +38,7 @@
   <body ng-app="appIndex" ng-controller="indexCtrl">
    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">
-        <img src="icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo doar faz bem">
+        <img src="assets/icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo doar faz bem">
         Doar faz bem
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,20 +51,20 @@
             <a class="nav-link" href="#">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cadastro</a>
+            <a class="nav-link" href="#">Meu Perfil</a>
           </li>
         </ul>
+        <div class="my-2 my-lg-0">
+          <button class="btn btn-outline-danger my-2 my-sm-0" ng-click="logout();">Sair</button>
+        </div>
       </div>
     </nav>
 
-  	<div class="container" style="max-width: 800px;">
+    <div class="container" style="max-width: 800px;">
       
       <h1 style="margin-top: 40px;">Home Receptor</h1>
-	    
-	  </div>
+      
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -72,8 +73,9 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Index AngularJS -->
-    <script src="login.js"></script>
+    <script src="js/home-receptor.js"></script>
     <!-- Jquery mask -->
-    <script src="jquery.mask.min.js"></script>
+    <script src="js/libs/jquery.mask.min.js"></script>
+    <script src="js/libs/angular-ui-notification.js"></script>
   </body>
 </html>

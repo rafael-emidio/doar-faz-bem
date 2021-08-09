@@ -11,10 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link href="js/libs/angular-ui-notification.css" rel="stylesheet" />
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/903500f45c.js" crossorigin="anonymous"></script>
-    <link rel="icon" type="image/png" href="icon.png">
-    <title>Cadastro de usuário - Doar Faz Bem</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <title>Entrar - Doar Faz Bem</title>
     <style type="text/css">
     	body{
 	    	background-position: center;
@@ -37,7 +38,7 @@
   <body ng-app="appIndex" ng-controller="indexCtrl">
    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">
-        <img src="icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo doar faz bem">
+        <img src="assets/icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo doar faz bem">
         Doar faz bem
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,13 +48,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Início</a>
+            <a class="nav-link" href="#">Entrar</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Cadastro</a>
+            <a class="nav-link" href="cadastro.html">Cadastro</a>
           </li>
         </ul>
       </div>
@@ -61,8 +59,8 @@
 
   	<div class="container" style="max-width: 800px;">
       
-      <h1 style="margin-top: 40px;">Login</h1>
-	    <form onsubmit="aviso(event)" style="margin-bottom: 60px;">
+      <h1 style="margin-top: 40px;">Entrar</h1>
+	    <form>
           
           <div class="form-group">
             <label for="cpf">CPF</label>
@@ -80,7 +78,7 @@
           </small>
           </div>
                     
-          <button type="submit" class="btn btn-primary">Entrar</button>
+          <button class="btn btn-primary" ng-click="login();" style="margin-bottom:50px;">Entrar</button>
         </form>
 	  </div>
     <!-- Optional JavaScript -->
@@ -91,8 +89,9 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Index AngularJS -->
-    <script src="login.js"></script>
+    <script src="js/login.js"></script>
     <!-- Jquery mask -->
-    <script src="jquery.mask.min.js"></script>
+    <script src="js/libs/jquery.mask.min.js"></script>
+    <script src="js/libs/angular-ui-notification.js"></script>
   </body>
 </html>
