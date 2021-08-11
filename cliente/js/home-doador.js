@@ -1,13 +1,18 @@
 angular.module('appIndex', ['ui-notification'])
 .controller('indexCtrl', function($scope,$timeout,$http, Notification) {
-    const server = 'http://localhost:3001';
+    const server = localStorage.getItem("server");
     
     var init = function(){
+      if(localStorage.getItem("server") ==  null || server == null){
+        window.location.href = "index.html";
+      }
+      
       //redireciona para login caso não haja token
       if(localStorage.getItem("token") ==  null){
         window.location.href = "login.html";
       }
-      console.log(server);
+      
+      console.log('servidor: '+server);
     }
     init();
 
@@ -40,7 +45,7 @@ angular.module('appIndex', ['ui-notification'])
           return
         });
 
-      localStorage.clear();
+      localStorage.removeItem('token');
       if(localStorage.getItem("token") ==  null){
         window.location.href = "login.html";
       }

@@ -1,6 +1,6 @@
 angular.module('appIndex', ['ui-notification'])
 .controller('indexCtrl', function($scope,$timeout,$http, Notification) {
-    const server = 'http://localhost:3001';
+    const server = localStorage.getItem("server");
     $(document).ready(function() {
         $('.select-multiple').select2({
           placeholder: "Selecione a doação",
@@ -9,7 +9,10 @@ angular.module('appIndex', ['ui-notification'])
     });
 
     var init = function(){
-      console.log(server);
+      if(localStorage.getItem("server") ==  null || server == null){
+        window.location.href = "index.html";
+      }
+      console.log('servidor: '+server);
     }
 
     init();

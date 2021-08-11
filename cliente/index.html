@@ -47,6 +47,9 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Início</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="login.html">Entrar</a>
           </li>
@@ -61,6 +64,23 @@
       
       <h1 style="margin-top: 40px;">Página inicial Doar faz bem</h1>
       <p style="margin-top: 20px;">Projeto realizado para obtenção de nota parcial na disciplina de Projeto Cliente Servidor do curso de Análise e desenvolvimento de sistemas na UTFPR-PG.</p>
+      <form ng-if="!server">
+        <div class="form-group">
+          <label for="server">Defina o servidor:</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">http://</div>
+            </div>
+           <input type="text" class="form-control" id="server" placeholder="Digite o ip e porta do servidor" required>
+          </div>
+          
+        </div>                    
+        <button class="btn btn-success" ng-click="defineServer();" style="margin-bottom:50px;">Definir servidor</button>
+      </form>
+      <div ng-if="server">
+        <h4>O servidor atual é '<span style="color:green">{{server}}</span>' deseja redefinir?</h4>                   
+        <button class="btn btn-warning" ng-click="reDefineServer();" style="margin-bottom:50px;">Redefinir servidor</button>
+      </form>
       
     </div>
     <!-- Optional JavaScript -->
@@ -71,7 +91,7 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Index AngularJS -->
-    <!-- <script src="js/home-receptor.js"></script> -->
+    <script src="js/index.js"></script>
     <!-- Jquery mask -->
     <script src="js/libs/jquery.mask.min.js"></script>
     <script src="js/libs/angular-ui-notification.js"></script>

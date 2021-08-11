@@ -1,6 +1,6 @@
 angular.module('appIndex', ['ui-notification'])
 .controller('indexCtrl', function($scope,$timeout,$http, Notification) {
-    const server = 'http://localhost:3001';
+    const server = localStorage.getItem("server");
     $(document).ready(function() {
         $('.select-multiple').select2({
           placeholder: "Selecione a doação",
@@ -9,7 +9,10 @@ angular.module('appIndex', ['ui-notification'])
     });
 
     var init = function(){
-      
+      if(localStorage.getItem("server") ==  null || server == null){
+        window.location.href = "index.html";
+      }
+      console.log('servidor: '+server);
     }
     init();
 
@@ -27,10 +30,10 @@ angular.module('appIndex', ['ui-notification'])
       tipo_doacao = $("#tipo_doacao").val();
       tipo_doacao = tipo_doacao.join();
 
-      if(!isValidCPF(cpf)){
-        Notification.warning({message:'Por favor digite um CPF válido para realizar o cadastro.', delay: 3000});
-        return
-      }
+      // if(!isValidCPF(cpf)){
+      //   Notification.warning({message:'Por favor digite um CPF válido para realizar o cadastro.', delay: 3000});
+      //   return
+      // }
 
       if(senha != confirm_senha){
         Notification.warning({message:'A senha não pôde ser confirmada pois não são iguais, por favor confirme a senha novamente.', delay: 3000});
