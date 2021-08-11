@@ -79,18 +79,23 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status);
 
           if (response.status==200){
-            Notification.success({message: 'Cadastro efetuado com sucesso!', delay: 1500});
+            Notification.success({message: 'Cadastro efetuado com sucesso!', delay: 3000});
             usuario = response.data;
             //redirteciona usuario para login
             window.location.href = "login.html";
 
           }else{
-            Notification.error({message:'Não foi possivel efetuar o cadastro - '+response.data.mensagem, delay: 1500});
+            Notification.error({message:'Não foi possivel efetuar o cadastro - '+response.data.mensagem, delay: 5000});
           }
 
         }, function(response) {
 
-          Notification.error({message:'Não foi possivel efetuar o cadastro - '+response.data.mensagem, delay: 1500});
+          if(response.data){
+            Notification.error({message:'Não foi possivel efetuar o cadastro - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel efetuar o cadastro - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
           console.log(response.status);
         });
     }

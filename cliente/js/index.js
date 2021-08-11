@@ -26,7 +26,7 @@ angular.module('appIndex', ['ui-notification'])
         server = server.replace("http://","");
       }
       
-      localStorage.setItem("server", 'http://'+server);
+      localStorage.setItem("server", 'http://'+server.trim());
       window.location.href = "login.html";
     }
 

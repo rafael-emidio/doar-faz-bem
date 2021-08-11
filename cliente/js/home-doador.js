@@ -32,15 +32,15 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status);
 
           if (response.status==204){
-            Notification.success({message: 'Logout efetuado com sucesso!', delay: 1500});
+            Notification.success({message: 'Logout efetuado com sucesso!', delay: 3000});
             
           }else{
-            Notification.error({message:'Não foi possivel efetuar logout - '+response.data.mensagem, delay: 1500});
+            Notification.error({message:'Não foi possivel efetuar logout - '+response.data.mensagem, delay: 3000});
           }
 
         }, function(response) {
 
-          Notification.error({message:'Não foi possivel efetuar logout - '+response.data.mensagem, delay: 1500});
+          Notification.error({message:'Não foi possivel efetuar logout - '+response.data.mensagem, delay: 3000});
           console.log(response.status);
           return
         });

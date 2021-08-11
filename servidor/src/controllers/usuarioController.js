@@ -22,6 +22,32 @@ function erro(req, res, msg) {
     })
 }
 
+function verifyTipoDoacao(tipo_doacao) {
+    let aux = []
+    let flag = 1
+    tipo_doacao = tipo_doacao.split(",")
+
+    tipo_doacao.forEach(function(item, index) {
+      //tira espaços e coloca tudo maiúsculo
+      item = item.trim().toUpperCase()
+      //tira o acento de remédio
+      if(item.includes('É')){
+        item = item.replace('É','E')
+      }
+
+      //verifica se o item corresponde
+      if(item == 'CESTA' ||
+        item == 'REMEDIO' ||
+        item == 'ROUPA'){
+        aux.push(item)
+      }
+    })
+    if(tipo_doacao.length != aux.length){
+        return false
+    }
+    return aux
+}
+
 
 module.exports = {
     async listar(req, res) {
@@ -108,7 +134,11 @@ module.exports = {
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível cadastrar o usuário: tipo_doacao nulo ou vazio");
 
+        tipo_doacao = verifyTipoDoacao(tipo_doacao)
+        if(tipo_doacao == false)
+            return erro(req, res, "Não foi possível cadastrar o usuário: tipo_doacao deve seguir o formato especificado (CESTA, REMEDIO, ROUPA)");
 
+        tipo_doacao = tipo_doacao.join()
         cpf = cpf.replace(/[\s.-]*/igm, '')
         telefone = telefone.replace(/[\s()-]*/igm, '')
 
