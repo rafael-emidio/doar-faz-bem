@@ -3,7 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 class Doacao extends Model {
   static init(connection) {
     super.init({
-      tipo_doacao: DataTypes.INTEGER,
+      tipo_doacao: DataTypes.STRING,
       data: DataTypes.STRING,
       local: DataTypes.STRING,
       doadorId: DataTypes.INTEGER,

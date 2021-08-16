@@ -62,7 +62,7 @@ module.exports = {
     async editar(req, res) {
         //const {id} = req.params;
         const { id } = req.body
-        let { nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao } = req.body;
+        let { nome, cpf, senha, email, telefone, endereco, tipo } = req.body;
         const usuario = await Usuario.findByPk(id);
 
         if (usuario == null)
@@ -87,13 +87,11 @@ module.exports = {
             return erro(req, res, "Não foi possível atualizar o usuário: endereco nulo ou vazio");
 
         if (tipo == null)
-            return erro(req, res, "Não foi possível atualizar o usuário: tipo nulo ou vazio");
-
-        if (tipo_doacao == '' || tipo_doacao == null)
-            return erro(req, res, "Não foi possível atualizar o usuário: tipo_doacao nulo ou vazio");
+            return erro(req, res, "Não foi possível atualizar o usuário: tipo nulo ou vazio");     
 
         cpf = cpf.replace(/[\s.-]*/igm, '')
         telefone = telefone.replace(/[\s()-]*/igm, '')
+
         usuario.nome = nome
         usuario.cpf = cpf
         usuario.senha = senha
@@ -101,14 +99,13 @@ module.exports = {
         usuario.telefone = telefone
         usuario.endereco = endereco
         usuario.tipo = tipo
-        usuario.tipo_doacao = tipo_doacao
 
         const usuario_response = await usuario.save()
         return res.status(200).json(usuario_response)
     },
 
     async cadastrar(req, res) {
-        let { nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao } = req.body;
+        let { nome, cpf, senha, email, telefone, endereco, tipo } = req.body;
 
         if (nome == '' || nome == null)
             return erro(req, res, "Não foi possível cadastrar o usuário: nome nulo ou vazio");
@@ -131,18 +128,10 @@ module.exports = {
         if (tipo == null)
             return erro(req, res, "Não foi possível cadastrar o usuário: tipo nulo ou vazio");
 
-        if (tipo_doacao == '' || tipo_doacao == null)
-            return erro(req, res, "Não foi possível cadastrar o usuário: tipo_doacao nulo ou vazio");
-
-        tipo_doacao = verifyTipoDoacao(tipo_doacao)
-        if(tipo_doacao == false)
-            return erro(req, res, "Não foi possível cadastrar o usuário: tipo_doacao deve seguir o formato especificado (CESTA, REMEDIO, ROUPA)");
-
-        tipo_doacao = tipo_doacao.join()
         cpf = cpf.replace(/[\s.-]*/igm, '')
         telefone = telefone.replace(/[\s()-]*/igm, '')
 
-        const usuario = await Usuario.create({ nome, cpf, senha, email, telefone, endereco, tipo, tipo_doacao })
+        const usuario = await Usuario.create({ nome, cpf, senha, email, telefone, endereco, tipo })
         return res.status(200).json(usuario)
     },
 

@@ -1,6 +1,7 @@
 const Squelize = require('sequelize');
 
 const Usuario = require('../models/usuario')
+const Doacao = require('../models/doacao')
 
 const connection = new Squelize({
     dialect: 'mysql',
@@ -15,5 +16,6 @@ const connection = new Squelize({
 });
 
 Usuario.init(connection)
+Doacao.init(connection)
 
 module.exports = connection;

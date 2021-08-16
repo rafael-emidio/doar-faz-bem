@@ -61,7 +61,13 @@ routes.get('/doacoes/:id', verifyJWT, (req, res) => {
     DoacaoController.listarEspecifico(req, res)
 })
 
-routes.post('/doacoes', DoacaoController.cadastrar);
+routes.get('/usuarios/:id/doacoes', verifyJWT, (req, res) => {
+    DoacaoController.doacoesDoUsuario(req, res)
+})
+
+routes.post('/doacoes', verifyJWT, (req, res) => {
+    DoacaoController.cadastrar(req, res)
+})
 
 routes.put('/doacoes', verifyJWT, (req, res) => {
     DoacaoController.editar(req, res)
