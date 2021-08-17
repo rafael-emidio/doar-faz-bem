@@ -161,11 +161,11 @@ module.exports = {
         cpf = cpf.replace(/[\s.-]*/igm, '')
         const usuario = await sequelize.query("SELECT * FROM usuario WHERE cpf = '" + cpf + "' AND senha = '" + senha + "';", { type: sequelize.QueryTypes.SELECT });
         let token = '';
-
+        
         if (usuario.length == 0)
             return erro(req, res, "Falha ao autenticar");
 
-        token = jwt.sign({ ...usuario['id'] }, 'segredo', {
+        token = jwt.sign({ id:usuario[0]['id'] }, 'segredo', {
             expiresIn: 86400 // expires in 1 day
         });
 
