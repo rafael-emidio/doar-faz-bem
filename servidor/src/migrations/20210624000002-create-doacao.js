@@ -20,9 +20,6 @@ module.exports = {
       doadorId: {
         type: Sequelize.INTEGER
       },
-      receptorId: {
-        type: Sequelize.INTEGER
-      },
     });
   },
   down: async (queryInterface, Sequelize) => {

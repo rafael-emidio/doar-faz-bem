@@ -10,7 +10,6 @@ class Usuario extends Model {
       telefone: DataTypes.STRING,
       endereco: DataTypes.STRING,
       tipo: DataTypes.INTEGER,
-      tipo_doacao: DataTypes.STRING,
     }, {
       sequelize: connection,
       modelName: 'usuario',

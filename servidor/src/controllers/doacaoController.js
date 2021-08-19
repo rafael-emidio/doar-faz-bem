@@ -60,7 +60,7 @@ module.exports = {
     
     async doacoesDoUsuario(req, res) {
         const {id} = req.params;
-        const doacoes = await sequelize.query("SELECT * FROM doacao WHERE doadorId = " + id + " OR receptorId = " + id + ";", { type: sequelize.QueryTypes.SELECT });
+        const doacoes = await sequelize.query("SELECT * FROM doacao WHERE doadorId = " + id + ";", { type: sequelize.QueryTypes.SELECT });
 
         if (doacoes.length == 0)
             return erro(req, res, "Não existem doacoes ou solicitacoes para esse usuario");
@@ -71,7 +71,7 @@ module.exports = {
     async editar(req, res) {
         //const {id} = req.params;
         const { id } = req.body
-        let { tipo_doacao, data, local, doadorId, receptorId } = req.body;
+        let { tipo_doacao, data, local, doadorId } = req.body;
         const doacao = await Doacao.findByPk(id);
 
         if (doacao == null)
@@ -86,9 +86,6 @@ module.exports = {
         if (doadorId == '' || doadorId == null)
             return erro(req, res, "Não foi possível atualizar a doacao: doadorId nulo ou vazio");
 
-        if (receptorId == '' || receptorId == null)
-            return erro(req, res, "Não foi possível atualizar a doacao: receptorId nulo ou vazio");
-
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível atualizar a doacao: tipo_doacao nulo ou vazio");
 
@@ -102,14 +99,13 @@ module.exports = {
         doacao.data = data
         doacao.local = local
         doacao.doadorId = doadorId
-        doacao.receptorId = receptorId
 
         const doacao_response = await doacao.save()
         return res.status(200).json(doacao_response)
     },
 
     async cadastrar(req, res) {
-        let { tipo_doacao, data, local, doadorId, receptorId } = req.body;
+        let { tipo_doacao, data, local, doadorId } = req.body;
 
         if (data == '' || data == null)
             return erro(req, res, "Não foi possível cadastrar a doacao: data nulo ou vazio");
@@ -119,9 +115,6 @@ module.exports = {
 
         if (doadorId == '' || doadorId == null)
             return erro(req, res, "Não foi possível cadastrar a doacao: doadorId nulo ou vazio");
-
-        if (receptorId == '' || receptorId == null)
-            return erro(req, res, "Não foi possível cadastrar a doacao: receptorId nulo ou vazio");
 
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível cadastrar a doacao: tipo_doacao nulo ou vazio");
@@ -134,7 +127,7 @@ module.exports = {
         let doacao = []
         
         for(let i = 0; i < tipo_doacao.length; i++){
-            doacao = await Doacao.create({ tipo_doacao:tipo_doacao[i], data, local, doadorId, receptorId })
+            doacao = await Doacao.create({ tipo_doacao:tipo_doacao[i], data, local, doadorId })
             doacoes.push(doacao)
         }
 

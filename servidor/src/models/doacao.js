@@ -7,7 +7,6 @@ class Doacao extends Model {
       data: DataTypes.STRING,
       local: DataTypes.STRING,
       doadorId: DataTypes.INTEGER,
-      receptorId: DataTypes.INTEGER,
     }, {
       sequelize: connection,
       modelName: 'doacao',
