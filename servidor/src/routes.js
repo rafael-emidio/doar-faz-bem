@@ -1,6 +1,7 @@
 const express = require('express');
 const UsuarioController = require('./controllers/usuarioController.js')
 const DoacaoController = require('./controllers/doacaoController.js')
+const SolicitacaoController = require('./controllers/solicitacaoController.js')
 const jwt = require('jsonwebtoken');
 
 const routes = express.Router()
@@ -78,5 +79,29 @@ routes.delete('/doacoes/:id', verifyJWT, (req, res) => {
 })
 
 //routes.put('/usuarios/:id', UsuarioController.editar);
+
+
+// ======================= Solicitacao ==============================
+routes.get('/solicitacoes', SolicitacaoController.listar);
+
+routes.get('/solicitacoes/:id', verifyJWT, (req, res) => {
+    SolicitacaoController.listarEspecifico(req, res)
+})
+
+routes.get('/usuarios/:id/solicitacoes', verifyJWT, (req, res) => {
+    SolicitacaoController.solicitacoesDoUsuario(req, res)
+})
+
+routes.post('/solicitacoes', verifyJWT, (req, res) => {
+    SolicitacaoController.cadastrar(req, res)
+})
+
+routes.put('/solicitacoes', verifyJWT, (req, res) => {
+    SolicitacaoController.editar(req, res)
+})
+
+routes.delete('/solicitacoes/:id', verifyJWT, (req, res) => {
+    SolicitacaoController.excluir(req, res)
+})
 
 module.exports = routes;

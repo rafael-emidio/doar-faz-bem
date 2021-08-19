@@ -65,13 +65,18 @@ angular.module('appIndex', ['ui-notification'])
     $scope.cadastrarDoacao = function(){
       data = document.getElementById('data').value;
       local = document.getElementById('local').value;
+      quantidade_total = document.getElementById('quantidade_total').value;
+      quantidade_restante = document.getElementById('quantidade_restante').value;
+
       tipo_doacao = $("input[type='radio'][name='tipo']:checked").val();
 
       console.log(doadorId)
 
       console.log('cadastro - data: '+data+
                     ' local: '+local+
-                    ' tipo_doacao: '+tipo_doacao
+                    ' tipo_doacao: '+tipo_doacao+
+                    ' quantidade_total: '+quantidade_total+
+                    ' quantidade_restante: '+quantidade_restante
                 );
 
       $http({
@@ -82,11 +87,12 @@ angular.module('appIndex', ['ui-notification'])
          },
         data: {
             id: 0,
+            doadorId: doadorId,
             data: data,
             local: local,
             tipo_doacao: tipo_doacao,
-            doadorId: doadorId,
-            receptorId: '0',
+            quantidade_total: quantidade_total,
+            quantidade_restante: quantidade_total,
             }
         }).
       then(function(response) {
@@ -97,7 +103,7 @@ angular.module('appIndex', ['ui-notification'])
             Notification.success({message: 'Cadastro de doação efetuado com sucesso!', delay: 3000});
             doacao = response.data;
             //recarrega a página para exibir a lista
-            location.reload();
+            //location.reload();
 
           }else{
             Notification.error({message:'Não foi possivel efetuar o cadastro da doação - '+response.data.mensagem, delay: 5000});

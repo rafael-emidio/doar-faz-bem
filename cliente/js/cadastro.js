@@ -27,8 +27,6 @@ angular.module('appIndex', ['ui-notification'])
       senha = document.getElementById('senha').value;
       confirm_senha = document.getElementById('confirm_senha').value;
       tipo = $("input[type='radio'][name='tipo']:checked").val();
-      tipo_doacao = $("#tipo_doacao").val();
-      tipo_doacao = tipo_doacao.join();
 
       // if(!isValidCPF(cpf)){
       //   Notification.warning({message:'Por favor digite um CPF válido para realizar o cadastro.', delay: 3000});
@@ -40,10 +38,7 @@ angular.module('appIndex', ['ui-notification'])
         return
       }
 
-      if(tipo_doacao == ''){
-        Notification.warning({message:'Selecione pelo menos um tipo de doação.', delay: 3000});
-        return
-      }
+
 
       cpf = cpf.replace(/[\s.-]*/igm, '')
       telefone = telefone.replace(/[\s()-]*/igm, '')
@@ -55,8 +50,7 @@ angular.module('appIndex', ['ui-notification'])
                     ' endereco: '+endereco+
                     ' senha: '+senha+
                     ' confirm_senha: '+confirm_senha+
-                    ' tipo: '+tipo+
-                    ' tipo_doacao: '+tipo_doacao
+                    ' tipo: '+tipo
                 );
 
       $http({
@@ -70,8 +64,7 @@ angular.module('appIndex', ['ui-notification'])
             email: email,
             telefone: telefone,
             endereco: endereco,
-            tipo: tipo,
-            tipo_doacao: tipo_doacao,
+            tipo: tipo
             }
         }).
       then(function(response) {
