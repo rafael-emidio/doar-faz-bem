@@ -61,6 +61,79 @@ angular.module('appIndex', ['ui-notification'])
         });
       
     }
+    $scope.deletaDados = function(id){
+      $http({
+        method: 'DELETE',
+        url: $scope.urlCadastroDoacao+'/'+id,
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+          if (response.status==200){
+            Notification.success({message: 'Deletado com sucesso!', delay: 3000});
+            //recarrega a página para exibir a lista
+            location.reload();
+
+          }else{
+            Notification.error({message:'Não foi possivel deletar a doação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel deletar a doação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel deletar a doação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+    }
+    
+    $scope.setaDadosModal = function(id){
+      console.log(id);
+      $http({
+        method: 'GET',
+        url: $scope.urlCadastroDoacao+'/'+id,
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+          $scope.id = response.data.id
+
+          console.log(response.status);
+          console.log(response);
+
+          if (response.status==200){
+            Notification.success({message: 'Busca de doação efetuada com sucesso!', delay: 3000});
+            
+            document.getElementById('data').value = response.data.data;
+            document.getElementById('local').value = response.data.local;
+            document.getElementById('quantidade_total').value = response.data.quantidade_total;
+            document.getElementById('quantidade_restante').value = response.data.quantidade_restante;
+            $("input[type='radio'][name='tipo'][value='"+response.data.tipo_doacao+"']").prop("checked", true);
+
+            $('#modaldoacao').modal('show');
+
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a busca da doação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel efetuar a busca da doação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a busca da doação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+    }
 
     $scope.cadastrarDoacao = function(){
       data = document.getElementById('data').value;
@@ -103,7 +176,7 @@ angular.module('appIndex', ['ui-notification'])
             Notification.success({message: 'Cadastro de doação efetuado com sucesso!', delay: 3000});
             doacao = response.data;
             //recarrega a página para exibir a lista
-            //location.reload();
+            location.reload();
 
           }else{
             Notification.error({message:'Não foi possivel efetuar o cadastro da doação - '+response.data.mensagem, delay: 5000});
@@ -115,6 +188,65 @@ angular.module('appIndex', ['ui-notification'])
             Notification.error({message:'Não foi possivel efetuar o cadastro da doação - '+response.data.mensagem, delay: 5000});
           }else{
             Notification.error({message:'Não foi possivel efetuar o cadastro da doação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+    }
+
+    
+    $scope.editarDoacao = function(){
+      data = document.getElementById('data').value;
+      local = document.getElementById('local').value;
+      quantidade_total = document.getElementById('quantidade_total').value;
+      quantidade_restante = document.getElementById('quantidade_restante').value;
+
+      tipo_doacao = $("input[type='radio'][name='tipo']:checked").val();
+
+      console.log(doadorId)
+
+      console.log('cadastro - data: '+data+
+                    ' local: '+local+
+                    ' tipo_doacao: '+tipo_doacao+
+                    ' quantidade_total: '+quantidade_total+
+                    ' quantidade_restante: '+quantidade_restante
+                );
+
+      $http({
+        method: 'PUT',
+        url: $scope.urlCadastroDoacao,
+        headers: {
+           'token': localStorage.getItem("token")
+         },
+        data: {
+            id: $scope.id,
+            doadorId: doadorId,
+            data: data,
+            local: local,
+            tipo_doacao: tipo_doacao,
+            quantidade_total: quantidade_total,
+            quantidade_restante: quantidade_restante,
+            }
+        }).
+      then(function(response) {
+
+          console.log(response.status);
+
+          if (response.status==200){
+            Notification.success({message: 'Editado com sucesso!', delay: 3000});
+            //recarrega a página para exibir a lista
+            location.reload();
+
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - servidor inválido, por favor redefina o servidor', delay: 5000});
           }
           
           console.log(response.status);
