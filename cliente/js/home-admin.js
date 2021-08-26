@@ -166,7 +166,8 @@ angular.module('appIndex', ['ui-notification'])
     }
 
     $scope.selecionaDoacao = function(idDoacao, doacao){
-      $scope.solicitacaoAtual
+       console.log(doacao)
+      doacao.quantidade_restante = doacao.quantidade_restante - 1
       
       $http({
         method: 'PUT',
@@ -176,12 +177,12 @@ angular.module('appIndex', ['ui-notification'])
          },
         data: {
             id: doacao.id,
-            doadorId: doadorId,
-            data: data,
-            local: local,
-            tipo_doacao: tipo_doacao,
-            quantidade_total: quantidade_total,
-            quantidade_restante: quantidade_restante,
+            doadorId: doacao.doadorId,
+            data: doacao.data,
+            local: doacao.local,
+            tipo_doacao: doacao.tipo_doacao,
+            quantidade_total: doacao.quantidade_total,
+            quantidade_restante: doacao.quantidade_restante,
             }
         }).
       then(function(response) {
@@ -189,9 +190,48 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status);
 
           if (response.status==200){
-            Notification.success({message: 'Editado com sucesso!', delay: 3000});
+            Notification.success({message: 'Doação atualizada com sucesso!', delay: 3000});
             //recarrega a página para exibir a lista
-            location.reload();
+            //location.reload();
+
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+
+      $http({
+        method: 'PUT',
+        url: $scope.urlSolicitacoes,
+        headers: {
+           'token': localStorage.getItem("token")
+         },
+        data: {
+          id: $scope.solicitacaoAtual.id,
+          receptorId: $scope.solicitacaoAtual.receptorId,
+          data: $scope.solicitacaoAtual.data,
+          tipo_doacao: $scope.solicitacaoAtual.tipo_doacao,
+          status: true,
+          doacaoId: doacao.id
+            }
+        }).
+      then(function(response) {
+
+          console.log(response.status);
+
+          if (response.status==200){
+            Notification.success({message: 'Solicitação atualizada com sucesso!', delay: 3000});
+            //recarrega a página para exibir a lista
+            //location.reload();
 
           }else{
             Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
