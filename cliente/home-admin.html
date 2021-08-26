@@ -291,7 +291,6 @@
               <th scope="col">Local</th>
               <th scope="col">Total</th>
               <th scope="col">Resta</th>
-              <th scope="col">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -306,14 +305,6 @@
               <td>{{doacao.local}}</td>
               <td>{{doacao.quantidade_total}}</td>
               <td>{{doacao.quantidade_restante}}</td>
-              <td>
-                <button type="button" class="btn btn-success" ng-click="setaDadosModal(doacao.id)">
-                  Editar
-                </button>
-                <button type="button" class="btn btn-danger" ng-click="deletaDados(doacao.id)">
-                  Deletar
-                </button>
-              </td>
             </tr>
           </tbody>
         </table>
