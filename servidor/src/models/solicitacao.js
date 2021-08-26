@@ -5,7 +5,7 @@ class Solicitacao extends Model {
     super.init({
       tipo_doacao: DataTypes.STRING,
       data: DataTypes.STRING,
-      status: DataTypes.INTEGER,
+      status: DataTypes.BOOLEAN,
       receptorId: DataTypes.INTEGER,
       doacaoId: DataTypes.INTEGER,
     }, {
