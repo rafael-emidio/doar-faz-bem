@@ -88,9 +88,6 @@ module.exports = {
         if (quantidade_total == '' || quantidade_total == null)
             return erro(req, res, "Não foi possível atualizar a doacao: quantidade_total nulo ou vazio");
 
-        if (quantidade_restante == '' || quantidade_restante == null)
-            return erro(req, res, "Não foi possível atualizar a doacao: quantidade_restante nulo ou vazio");
-
         tipo_doacao = verifyTipoDoacao(tipo_doacao)
         if (tipo_doacao == false)
             return erro(req, res, "Não foi possível atualizar a doacao: tipo_doacao deve seguir o formato especificado (CESTA, REMEDIO, ROUPA)");

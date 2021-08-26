@@ -27,7 +27,7 @@ angular.module('appIndex', ['ui-notification'])
     $scope.urlLogout = server+'/logout';
     $scope.urlCadastro = server+'/usuarios';
      $scope.urlSolicitacoes = server+'/solicitacoes';
-     $scope.urlDoacoes = server+'/solicitacoes';
+     $scope.urlDoacoes = server+'/doacoes';
     
     $('#modalusuario').on('hidden.bs.modal', function () {
       document.getElementById('nome').value = '';
@@ -231,7 +231,7 @@ angular.module('appIndex', ['ui-notification'])
           if (response.status==200){
             Notification.success({message: 'Solicitação atualizada com sucesso!', delay: 3000});
             //recarrega a página para exibir a lista
-            //location.reload();
+            location.reload();
 
           }else{
             Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
