@@ -100,7 +100,7 @@
             <div class="form-group">
               <label for="quantidade_restante">Quantidade Restante * </label>
               <input type="number" class="form-control" id="quantidade_restante"
-                placeholder="Esse campo é preenchido automaticamente" required >
+                placeholder="Esse campo é preenchido automaticamente" disabled >
             </div>
 
             <fieldset class="form-group">
@@ -128,8 +128,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <button class="btn btn-success" ng-click="cadastrarDoacao()" ng-if="!id" type="submit">Cadastrar</button>
-            <button class="btn btn-success" ng-click="editarDoacao()" ng-if="id" type="submit">Editar</button>
+            <button class="btn btn-success" ng-click="cadastrarDoacao()" ng-if="id==0" type="submit">Cadastrar</button>
+            <button class="btn btn-success" ng-click="editarDoacao()" ng-if="id!=0" type="submit">Editar</button>
           </div>
         </form>
       </div>
@@ -147,58 +147,42 @@
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-1">
-        <p><b>Doador</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Tipo</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Data</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Local</b></p>
-      </div>
-      <div class="col-1">
-        <p><b>Total</b></p>
-      </div>
-      <div class="col-1">
-        <p><b>Resta</b></p>
-      </div>
-      <div class="col-3">
-        <p><b>Ações</b></p>
-      </div>
-    </div>
-    <div class="row" ng-if="doacoes" ng-repeat="doacao in doacoes">
-      <div class="col-1">
-        <p>{{doacao.doadorId}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{doacao.tipo_doacao}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{doacao.data}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{doacao.local}}</p>
-      </div>
-      <div class="col-1">
-        <p>{{doacao.quantidade_total}}</p>
-      </div>
-      <div class="col-1">
-        <p>{{doacao.quantidade_restante}}</p>
-      </div>
-      <div class="col-3">
-        <button type="button" class="btn btn-primary" style="font-size: 10px !important;" ng-click="setaDadosModal(doacao.id)">
-          Editar
-        </button>
-        <button type="button" class="btn btn-primary" style="font-size: 10px !important;" ng-click="deletaDados(doacao.id)">
-          Deletar
-        </button>
-      </div>
-    </div>
 
+    <table class="table table-striped" style="margin-top:35px;">
+      <thead>
+        <tr>
+          <th scope="col">Doador</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Data</th>
+          <th scope="col">Local</th>
+          <th scope="col">Total</th>
+          <th scope="col">Resta</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="!doacoes">
+          <th colspan="7" style="text-align: center;">Não existem doações cadastradas para seu usuário</th>
+        </tr>
+
+        <tr ng-if="doacoes" ng-repeat="doacao in doacoes">
+          <th scope="row">{{doacao.doadorId}}</th>
+          <td>{{doacao.tipo_doacao}}</td>
+          <td>{{doacao.data | date:'dd/MM/yyyy'}}</td>
+          <td>{{doacao.local}}</td>
+          <td>{{doacao.quantidade_total}}</td>
+          <td>{{doacao.quantidade_restante}}</td>
+          <td>
+            <button type="button" class="btn btn-success" ng-click="setaDadosModal(doacao.id)">
+              Editar
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deletaDados(doacao.id)">
+              Deletar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -48,8 +48,10 @@ angular.module('appIndex', ['ui-notification'])
             //redirteciona usuario de acordo com o tipo
             if(usuario.tipo == 0){
               window.location.href = "home-doador.html";
-            }else{
+            }else if(usuario.tipo == 1) {
               window.location.href = "home-receptor.html";
+            }else if(usuario.tipo == 2) {
+              window.location.href = "home-admin.html";
             }
 
           }else{

@@ -100,10 +100,66 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          <button class="btn btn-success" ng-click="cadastrarSolicitacao()" ng-if="!id" type="submit">Cadastrar</button>
-          <button class="btn btn-success" ng-click="editarSolicitacao()" ng-if="id" type="submit">Editar</button>
+          <button class="btn btn-success" ng-click="cadastrarSolicitacao()" ng-if="id==0" type="submit">Cadastrar</button>
+          <button class="btn btn-success" ng-click="editarSolicitacao()" ng-if="id!=0" type="submit">Editar</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+ <!-- Modal disponibilidade-->
+  <div class="modal fade" id="modaldisp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Disponibilidade para Solicitação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <table class="table table-striped" style="margin-top:35px;">
+            <thead>
+              <tr>
+                <th scope="col">Doação</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Data</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="!solicitacoes">
+                <th colspan="7" style="text-align: center;">Não existem solicitações cadastradas para seu usuário</th>
+              </tr>
+
+              <tr ng-if="solicitacoes" ng-repeat="solicitacao in solicitacoes">
+                <th scope="row">{{solicitacao.doacaoId}}</th>
+                <td>{{solicitacao.tipo_doacao}}</td>
+                <td>{{solicitacao.data | date:'dd/MM/yyyy'}}</td>
+                <td>{{solicitacao.status}}</td>
+                <td>
+                  <button type="button" class="btn btn-info" ng-click="verificaDisp(solicitacao.id)" style="margin-bottom:10px">
+                    Verificar disponibilidade
+                  </button>
+                  <br>
+                  <button type="button" class="btn btn-success" ng-click="setaDadosModalSoli(solicitacao.id)">
+                    <i class="far fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" ng-click="deletaDadosSoli(solicitacao.id)">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
     </div>
   </div>
 </div>
@@ -119,45 +175,42 @@
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-2">
-        <p><b>Doação</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Tipo</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Data</b></p>
-      </div>
-      <div class="col-2">
-        <p><b>Status</b></p>
-      </div>
-      <div class="col-4">
-        <p><b>Ações</b></p>
-      </div>
-    </div>
-    <div class="row" ng-if="solicitacoes" ng-repeat="solicitacao in solicitacoes">
-      <div class="col-2">
-        <p>{{solicitacao.doacaoId}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{solicitacao.tipo_doacao}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{solicitacao.data}}</p>
-      </div>
-      <div class="col-2">
-        <p>{{solicitacao.status}}</p>
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-primary" style="font-size: 10px !important;" ng-click="setaDadosModalSoli(solicitacao.id)">
-          Editar
-        </button>
-        <button type="button" class="btn btn-primary" style="font-size: 10px !important;" ng-click="deletaDadosSoli(solicitacao.id)">
-          Deletar
-        </button>
-      </div>
-    </div>
+    <table class="table table-striped" style="margin-top:35px;">
+      <thead>
+        <tr>
+          <th scope="col">Solicitação</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Data</th>
+          <th scope="col">Status</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="!solicitacoes">
+          <th colspan="7" style="text-align: center;">Não existem solicitações cadastradas para seu usuário</th>
+        </tr>
+
+        <tr ng-if="solicitacoes" ng-repeat="solicitacao in solicitacoes">
+          <th scope="row">{{solicitacao.doacaoId}}</th>
+          <td>{{solicitacao.tipo_doacao}}</td>
+          <td>{{solicitacao.data | date:'dd/MM/yyyy'}}</td>
+          <td>{{solicitacao.status}}</td>
+          <td>
+            <button type="button" class="btn btn-info" ng-click="verificaDisp(solicitacao.id)" style="margin-bottom:10px">
+              Verificar disponibilidade
+            </button>
+            <br>
+            <button type="button" class="btn btn-success" ng-click="setaDadosModalSoli(solicitacao.id)">
+              <i class="far fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deletaDadosSoli(solicitacao.id)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
       
     </div>
     <!-- Optional JavaScript -->

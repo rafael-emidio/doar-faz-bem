@@ -51,10 +51,6 @@ function verifyTipoDoacao(tipo_doacao) {
 module.exports = {
     async listar(req, res) {
         const doacoes = await Doacao.findAll()
-
-        if (doacoes.length == 0)
-            return erro(req, res, "Não existem doacao cadastrados");
-
         return res.status(200).json(doacoes)
     },
 
@@ -156,15 +152,17 @@ module.exports = {
             return erro(req, res, "Não foi possível excluir a docao" + id + ", doacao não encontrada");
 
         doacao.destroy()
-        return res.status(200).json(doacao)
+        return res.status(204).json(doacao)
     },
 
     async listarEspecifico(req, res) {
         const { id } = req.params
         const doacao = await Doacao.findByPk(id)
 
-        if (doacao == null)
-            return erro(req, res, "Não foi possível recuperar os dados da doacao " + id + ", doacao não encontrada");
+        if (doacao == null){
+            const semnada = []
+            return res.status(200).json(semnada)
+        }
 
         return res.status(200).json(doacao)
     },

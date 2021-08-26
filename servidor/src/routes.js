@@ -39,7 +39,10 @@ routes.post('/logout', verifyJWT, (req, res) => {
 })
 
 // ======================= Usuarios ==============================
-routes.get('/usuarios', UsuarioController.listar);
+
+routes.get('/usuarios', verifyJWT, (req, res) => {
+    UsuarioController.listar(req, res)
+})
 
 routes.get('/usuarios/:id', verifyJWT, (req, res) => {
     UsuarioController.listarEspecifico(req, res)
@@ -86,6 +89,10 @@ routes.get('/solicitacoes', SolicitacaoController.listar);
 
 routes.get('/solicitacoes/:id', verifyJWT, (req, res) => {
     SolicitacaoController.listarEspecifico(req, res)
+})
+
+routes.get('/solicitacoes/:id/disponibilidade', verifyJWT, (req, res) => {
+    SolicitacaoController.disponibilidadeSolicitacao(req, res)
 })
 
 routes.get('/usuarios/:id/solicitacoes', verifyJWT, (req, res) => {

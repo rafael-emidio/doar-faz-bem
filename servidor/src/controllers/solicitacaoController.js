@@ -1,5 +1,7 @@
 const Solicitacao = require('../models/solicitacao')
+const Doacao = require('../models/doacao')
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 
 const sequelize = new Sequelize('doarfazbem', 'root', '', {
@@ -52,8 +54,15 @@ module.exports = {
     async listar(req, res) {
         const solicitacoes = await Solicitacao.findAll()
 
-        if (solicitacoes.length == 0)
-            return erro(req, res, "Não existem solicitacao cadastrados");
+        solicitacoes.forEach(function (item, index) {
+            console.log(item)
+            console.log(item.status)
+            if (item.status == 0) {
+                item.status = false
+            }else{
+                item.status = true
+            }
+        })
 
         return res.status(200).json(solicitacoes)
     },
@@ -62,10 +71,49 @@ module.exports = {
         const { id } = req.params;
         const solicitacoes = await sequelize.query("SELECT * FROM solicitacao WHERE receptorId = " + id + ";", { type: sequelize.QueryTypes.SELECT });
 
-        if (solicitacoes.length == 0)
-            return erro(req, res, "Não existem solicitacoes para esse usuario");
-
+        solicitacoes.forEach(function (item, index) {
+            if (item.status == 0) {
+                item.status = false
+            }else{
+                item.status = true
+            }
+        })
         return res.status(200).json(solicitacoes)
+    },
+
+    async disponibilidadeSolicitacao(req, res) {
+        const { id } = req.params;
+
+        const solicitacao = await Solicitacao.findByPk(id);
+
+        const solicitacoes_user = await Solicitacao.findAll({
+                where: {
+                    receptorId:solicitacao.receptorId,
+                    data: { 
+                        [Sequelize.Op.and]: {
+                            [Sequelize.Op.gte]: moment().startOf('month').format('YYYY-MM-DD'), 
+                            [Sequelize.Op.lte]: moment().endOf('month').format('YYYY-MM-DD')
+                        }, 
+                    },
+                    status: 1,
+                } 
+            });
+
+        if(solicitacoes_user.length > 0)
+            return erro(req, res, "Usuário já recebeu sua doação do mês");
+        
+        const doacoes = await Doacao.findAll({
+                where: {
+                    tipo_doacao: solicitacao.tipo_doacao,
+                    quantidade_restante: {
+                        [Sequelize.Op.and]: {
+                            [Sequelize.Op.gt]: 0
+                        }, 
+                    },
+                } 
+            });
+
+        return res.status(200).json(doacoes)
     },
 
     async editar(req, res) {
@@ -82,6 +130,7 @@ module.exports = {
 
         if (status == null)
             return erro(req, res, "Não foi possível atualizar a solicitacao: status nulo ou vazio");
+
 
         if (receptorId == '' || receptorId == null)
             return erro(req, res, "Não foi possível atualizar a solicitacao: receptorId nulo ou vazio");
@@ -143,15 +192,17 @@ module.exports = {
             return erro(req, res, "Não foi possível excluir a docao" + id + ", solicitacao não encontrada");
 
         solicitacao.destroy()
-        return res.status(200).json(solicitacao)
+        return res.status(204).json(solicitacao)
     },
 
     async listarEspecifico(req, res) {
         const { id } = req.params
         const solicitacao = await Solicitacao.findByPk(id)
 
-        if (solicitacao == null)
-            return erro(req, res, "Não foi possível recuperar os dados da solicitacao " + id + ", solicitacao não encontrada");
+        if (solicitacao == null){
+            const semnada = []
+            return res.status(200).json(semnada)
+        }
 
         return res.status(200).json(solicitacao)
     },

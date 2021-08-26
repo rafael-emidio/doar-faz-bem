@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link href="js/libs/angular-ui-notification.css" rel="stylesheet" />
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/903500f45c.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <title>Admin - Doar Faz Bem</title>
+    <style type="text/css">
+      body{
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment:fixed;
+      }
+      .btn-primary{
+        font-size: 24px!important;
+      }
+      .text-center:last-child{
+          margin-bottom: 70px;
+      }
+      .shadow-hover:hover{
+        box-shadow: 1px 1px 10px 1px black;
+      }
+    </style>
+  </head>
+
+  <body ng-app="appIndex" ng-controller="indexCtrl">
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <img src="assets/icon.png" width="30" height="30" class="d-inline-block align-top" alt="Logo doar faz bem">
+        Doar faz bem
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Meu Perfil</a>
+          </li>
+        </ul>
+        <div class="my-2 my-lg-0">
+          <button class="btn btn-outline-danger my-2 my-sm-0" ng-click="logout();">Sair</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modal solicitacao-->
+  <div class="modal fade" id="modalusuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cadastrar Usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+        <small style="color: red;">Campos marcados com * são obrigatórios</small>
+          <div class="form-group">
+            <label for="nome">Nome completo * </label>
+            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome aqui" maxlength="60" required>
+          </div>
+          <div class="form-group">
+            <label for="cpf">CPF * </label>
+            <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF aqui" data-mask="000.000.000-00" required>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail * </label>
+            <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail aqui" maxlength="60" required>
+          </div>
+          <div class="form-group">
+            <label for="telefone">Telefone com DDD * </label>
+            <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone aqui" data-mask="(00)00000-0000" maxlength="60" required>
+          </div>
+          <div class="form-group">
+            <label for="endereco">Endereço * </label>
+            <input type="text" class="form-control" id="endereco" placeholder="Digite seu endereço aqui" required>
+          </div>
+          <div class="form-group">
+            <label for="senha">Senha * </label>
+            <input type="password" class="form-control" id="senha" placeholder="Digite sua senha aqui" maxlength="30" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm_senha">Confirmar senha * </label>
+            <input type="password" class="form-control" id="confirm_senha" placeholder="Confirme sua senha" maxlength="30" required>
+          </div>
+          <fieldset class="form-group">
+            <label>Tipo de usuário * : </label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tipo" id="tipo-doador" value="0" checked>
+              <label class="form-check-label" for="tipo-doador">
+                Doador
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tipo" id="tipo-receptor" value="1">
+              <label class="form-check-label" for="tipo-receptor">
+                Receptor
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tipo" id="tipo-admin" value="2">
+              <label class="form-check-label" for="tipo-admin">
+                Admin
+              </label>
+            </div>
+          </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button class="btn btn-success" ng-click="cadastrarUsuario()" ng-if="id==0" type="submit">Cadastrar</button>
+            <button class="btn btn-success" ng-click="editarUsuario()" ng-if="id!=0" type="submit">Editar</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+    <div class="container" style="max-width: 1200px;">
+
+      <div class="row">
+        <div class="col-6"><h1 style="margin-top: 40px;">Home Admin</h1></div>
+
+      <div class="col-6" style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-primary" style="margin-top: 40px;" data-toggle="modal" data-target="#modalusuario">
+          Cadastrar Usuário
+        </button>
+      </div>
+    </div>
+    <table class="table table-striped" style="margin-top:35px;">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">CPF</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Endereco</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="!usuarios">
+          <th colspan="8" style="text-align: center;">Não existem usuários cadastrados</th>
+        </tr>
+
+        <tr ng-if="usuarios" ng-repeat="usuario in usuarios">
+          <th scope="row">{{usuario.id}}</th>
+          <td>{{usuario.nome}}</td>
+          <td>{{usuario.cpf}}</td>
+          <td>{{usuario.email}}</td>
+          <td>{{usuario.telefone}}</td>
+          <td>{{usuario.endereco}}</td>
+          <td>
+            <p class="text-success" ng-if="usuario.tipo == 0">Doador</p>
+            <p class="text-info" ng-if="usuario.tipo == 1">Receptor</p>
+            <p class="text-danger" ng-if="usuario.tipo == 2">Administrador</p>
+          </td>
+          <td>
+            <button type="button" class="btn btn-success" ng-click="setaDadosModalUser(usuario.id)">
+              Editar
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deletaDadosUser(usuario.id)">
+              Deletar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+      
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Index AngularJS -->
+    <script src="js/home-admin.js"></script>
+    <!-- Jquery mask -->
+    <script src="js/libs/jquery.mask.min.js"></script>
+    <script src="js/libs/angular-ui-notification.js"></script>
+  </body>
+</html>

@@ -25,14 +25,15 @@ angular.module('appIndex', ['ui-notification'])
 
       $scope.urlLoadSolicitacoesUsuario = server+'/usuarios/'+receptorId+'/solicitacoes';
 
-      loadDoacoes();
+      loadSolicitacoes();
+      $scope.id = 0
     }
     init();
 
     $scope.urlLogout = server+'/logout';
     $scope.urlCadastroSolicitacao = server+'/solicitacoes';
 
-    function loadDoacoes(){
+    function loadSolicitacoes(){
       $http({
         method: 'GET',
         url: $scope.urlLoadSolicitacoesUsuario,
@@ -44,7 +45,6 @@ angular.module('appIndex', ['ui-notification'])
 
         if (response.status==200){
             $scope.solicitacoes = response.data;
-
           }else{
             Notification.error({message:'Não foi possivel carregar as solicitações - '+response.data.mensagem, delay: 5000});
           }
@@ -60,7 +60,11 @@ angular.module('appIndex', ['ui-notification'])
         });
       
     }
+
     $scope.deletaDadosSoli = function(id){
+      if(!confirm('Deseja deletar a solicitação '+id+' ?')){
+        return
+      }
       $http({
         method: 'DELETE',
         url: $scope.urlCadastroSolicitacao+'/'+id,
@@ -90,7 +94,13 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status);
         });
     }
-    
+
+    $('#modalsolicitacao').on('hidden.bs.modal', function () {
+      $("input[type='radio'][name='tipo']").prop("checked", false);
+      $scope.id = 0
+      location.reload();
+    })
+
     $scope.setaDadosModalSoli = function(id){
       console.log(id);
       $http({
@@ -110,8 +120,10 @@ angular.module('appIndex', ['ui-notification'])
 
           $scope.tipo_doacao = response.data.tipo_doacao
 
+          $scope.status = response.data.status
+
           if (response.status==200){
-            Notification.success({message: 'Busca de solicitação efetuada com sucesso!', delay: 3000});
+            //Notification.success({message: 'Busca de solicitação efetuada com sucesso!', delay: 3000});
             
             $("input[type='radio'][name='tipo'][value='"+response.data.tipo_doacao+"']").prop("checked", true);
 
@@ -151,7 +163,7 @@ angular.module('appIndex', ['ui-notification'])
             receptorId: receptorId,
             data: minDate,
             tipo_doacao: tipo_doacao,
-            status: 0,
+            status: false,
             doacaoId: 0
             }
         }).
@@ -204,7 +216,7 @@ angular.module('appIndex', ['ui-notification'])
           receptorId: receptorId,
           data: minDate,
           tipo_doacao: tipo_doacao,
-          status: 0,
+          status: $scope.status,
           doacaoId: $scope.doacaoId
             }
         }).

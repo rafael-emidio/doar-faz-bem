@@ -2,6 +2,7 @@ angular.module('appIndex', ['ui-notification'])
 .controller('indexCtrl', function($scope,$timeout,$http, Notification) {
     const server = localStorage.getItem("server");
     let doadorId = '';
+    $scope.id = 0;
    
     var init = function(){
       if(localStorage.getItem("server") ==  null || server == null){
@@ -27,6 +28,7 @@ angular.module('appIndex', ['ui-notification'])
       $scope.urlLoadDoacoesUsuario = server+'/usuarios/'+doadorId+'/doacoes';
 
       loadDoacoes();
+      
     }
     init();
 
@@ -62,6 +64,9 @@ angular.module('appIndex', ['ui-notification'])
       
     }
     $scope.deletaDados = function(id){
+      if(!confirm('Deseja deletar a doação '+id+' ?')){
+        return
+      }
       $http({
         method: 'DELETE',
         url: $scope.urlCadastroDoacao+'/'+id,
@@ -91,6 +96,15 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status);
         });
     }
+
+    $('#modaldoacao').on('hidden.bs.modal', function () {
+      document.getElementById('data').value = '';
+      document.getElementById('local').value = '';
+      document.getElementById('quantidade_total').value = '';
+      document.getElementById('quantidade_restante').value = '';
+      $("input[type='radio'][name='tipo']").prop("checked", false);
+      $scope.id = 0
+    })
     
     $scope.setaDadosModal = function(id){
       console.log(id);
@@ -109,7 +123,7 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response);
 
           if (response.status==200){
-            Notification.success({message: 'Busca de doação efetuada com sucesso!', delay: 3000});
+            //Notification.success({message: 'Busca de doação efetuada com sucesso!', delay: 3000});
             
             document.getElementById('data').value = response.data.data;
             document.getElementById('local').value = response.data.local;

@@ -52,10 +52,6 @@ function verifyTipoDoacao(tipo_doacao) {
 module.exports = {
     async listar(req, res) {
         const usuarios = await Usuario.findAll()
-
-        if (usuarios.length == 0)
-            return erro(req, res, "Não existem usuários cadastrados");
-
         return res.status(200).json(usuarios)
     },
 
@@ -143,15 +139,17 @@ module.exports = {
             return erro(req, res, "Não foi possível excluir o usuário"+id+", usuário não encontrado");
 
         usuario.destroy()
-        return res.status(200).json(usuario)
+        return res.status(204).json(usuario)
     },
 
     async listarEspecifico(req, res) {
         const { id } = req.params
         const usuario = await Usuario.findByPk(id)
 
-        if (usuario == null)
-            return erro(req, res, "Não foi possível recuperar os dados do usuário "+id+", usuário não encontrado");
+        if (usuario == null){
+            const semnada = []
+            return res.status(200).json(semnada)
+        }
 
         return res.status(200).json(usuario)
     },
