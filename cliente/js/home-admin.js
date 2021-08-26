@@ -16,14 +16,19 @@ angular.module('appIndex', ['ui-notification'])
       }
       console.log('servidor: '+server);
       $scope.urlLoadUsuarios = server+'/usuarios';
+      $scope.urlLoadSolicitacoes = server+'/solicitacoes';
+      $scope.urlLoadDoacoes = server+'/doacoes';
       loadUsuarios();
+      loadSolicitacoes();
+      loadDoacoes();
     }
     init();
 
     $scope.urlLogout = server+'/logout';
     $scope.urlCadastro = server+'/usuarios';
+     $scope.urlSolicitacoes = server+'/solicitacoes';
+     $scope.urlDoacoes = server+'/solicitacoes';
     
-
     $('#modalusuario').on('hidden.bs.modal', function () {
       document.getElementById('nome').value = '';
       document.getElementById('cpf').value = '';
@@ -63,6 +68,145 @@ angular.module('appIndex', ['ui-notification'])
           console.log(response.status)
         });
       
+    }
+
+    function loadSolicitacoes(){
+      $http({
+        method: 'GET',
+        url: $scope.urlLoadSolicitacoes,
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+        if (response.status==200){
+            $scope.solicitacoes = response.data;
+          }else{
+            Notification.error({message:'Não foi possivel carregar as solicitações - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel carregar as solicitações - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel carregar as solicitações - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          console.log(response.status)
+        });
+      
+    }
+
+    function loadDoacoes(){
+      $http({
+        method: 'GET',
+        url: $scope.urlLoadDoacoes,
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+        if (response.status==200){
+            $scope.doacoes = response.data;
+
+          }else{
+            Notification.error({message:'Não foi possivel carregar as doações - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel carregar as doações - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel carregar as doações - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          console.log(response.status)
+        });
+      
+    }
+
+    $scope.confirmReceb = function(id, solic){
+      console.log(id);
+      $scope.solicitacaoAtual = solic;
+      $http({
+        method: 'GET',
+        url: $scope.urlSolicitacoes+'/'+id+'/disponibilidade',
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+          if (response.status==200){
+            //Notification.success({message: 'Busca de solicitação efetuada com sucesso!', delay: 3000});
+            if(response.data==''){
+              Notification.warning({message:'Não existem doações disponíveis para a solicitação', delay: 5000});
+              return
+            }
+            $scope.doacoes = response.data;
+
+            $('#modalconfirm').modal('show');
+
+          }else{
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+    }
+
+    $scope.selecionaDoacao = function(idDoacao, doacao){
+      $scope.solicitacaoAtual
+      
+      $http({
+        method: 'PUT',
+        url: $scope.urlDoacoes,
+        headers: {
+           'token': localStorage.getItem("token")
+         },
+        data: {
+            id: doacao.id,
+            doadorId: doadorId,
+            data: data,
+            local: local,
+            tipo_doacao: tipo_doacao,
+            quantidade_total: quantidade_total,
+            quantidade_restante: quantidade_restante,
+            }
+        }).
+      then(function(response) {
+
+          console.log(response.status);
+
+          if (response.status==200){
+            Notification.success({message: 'Editado com sucesso!', delay: 3000});
+            //recarrega a página para exibir a lista
+            location.reload();
+
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel efetuar a edição da doação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
     }
 
     $scope.cadastrarUsuario = function(){

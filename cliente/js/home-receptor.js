@@ -101,6 +101,10 @@ angular.module('appIndex', ['ui-notification'])
       location.reload();
     })
 
+    $('#modaldisp').on('hidden.bs.modal', function () {
+      $scope.doacoes = ''
+    })
+
     $scope.setaDadosModalSoli = function(id){
       console.log(id);
       $http({
@@ -139,6 +143,43 @@ angular.module('appIndex', ['ui-notification'])
             Notification.error({message:'Não foi possivel efetuar a busca da solicitação - '+response.data.mensagem, delay: 5000});
           }else{
             Notification.error({message:'Não foi possivel efetuar a busca da solicitação - servidor inválido, por favor redefina o servidor', delay: 5000});
+          }
+          
+          console.log(response.status);
+        });
+    }
+
+    $scope.verificaDisp = function(id){
+      console.log(id);
+      $http({
+        method: 'GET',
+        url: $scope.urlCadastroSolicitacao+'/'+id+'/disponibilidade',
+        headers: {
+           'token': localStorage.getItem("token")
+         }
+        }).
+      then(function(response) {
+
+          if (response.status==200){
+            //Notification.success({message: 'Busca de solicitação efetuada com sucesso!', delay: 3000});
+            if(response.data==''){
+              Notification.warning({message:'Não existem doações disponíveis para a solicitação', delay: 5000});
+              return
+            }
+            $scope.doacoes = response.data;
+
+            $('#modaldisp').modal('show');
+
+          }else{
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - '+response.data.mensagem, delay: 5000});
+          }
+
+        }, function(response) {
+
+          if(response.data){
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - '+response.data.mensagem, delay: 5000});
+          }else{
+            Notification.error({message:'Não foi possivel verificar a disponibilidade da solicitação - servidor inválido, por favor redefina o servidor', delay: 5000});
           }
           
           console.log(response.status);

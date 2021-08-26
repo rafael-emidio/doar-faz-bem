@@ -135,6 +135,61 @@
   </div>
 </div>
 
+<!-- Modal doacoes solicitacao-->
+  <div class="modal fade" id="modalconfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Doações disponíveis para Solicitação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <table class="table table-striped" style="margin-top:35px;">
+            <thead>
+              <tr>
+                <th scope="col">Doação</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Data</th>
+                <th scope="col">Local</th>
+                <th scope="col">Doador</th>
+                <th scope="col">Quantidade Total</th>
+                <th scope="col">Quantidade Restante</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="!doacoes">
+                <th colspan="8" style="text-align: center;">Não existem doações para essa solicitação</th>
+              </tr>
+
+              <tr ng-if="doacoes" ng-repeat="doacao in doacoes">
+                <th scope="row">{{doacao.id}}</th>
+                <td>{{doacao.tipo_doacao}}</td>
+                <td>{{doacao.data | date:'dd/MM/yyyy'}}</td>
+                <td>{{doacao.local}}</td>
+                <td>{{doacao.doadorId}}</td>
+                <td>{{doacao.quantidade_total}}</td>
+                <td>{{doacao.quantidade_restante}}</td>
+                <td>
+                  <button type="button" class="btn btn-info" ng-click="selecionaDoacao(doacao.id, doacao)">
+                    Selecionar doação
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
     <div class="container" style="max-width: 1200px;">
 
       <div class="row">
@@ -146,47 +201,124 @@
         </button>
       </div>
     </div>
-    <table class="table table-striped" style="margin-top:35px;">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nome</th>
-          <th scope="col">CPF</th>
-          <th scope="col">Email</th>
-          <th scope="col">Telefone</th>
-          <th scope="col">Endereco</th>
-          <th scope="col">Tipo</th>
-          <th scope="col">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-if="!usuarios">
-          <th colspan="8" style="text-align: center;">Não existem usuários cadastrados</th>
-        </tr>
 
-        <tr ng-if="usuarios" ng-repeat="usuario in usuarios">
-          <th scope="row">{{usuario.id}}</th>
-          <td>{{usuario.nome}}</td>
-          <td>{{usuario.cpf}}</td>
-          <td>{{usuario.email}}</td>
-          <td>{{usuario.telefone}}</td>
-          <td>{{usuario.endereco}}</td>
-          <td>
-            <p class="text-success" ng-if="usuario.tipo == 0">Doador</p>
-            <p class="text-info" ng-if="usuario.tipo == 1">Receptor</p>
-            <p class="text-danger" ng-if="usuario.tipo == 2">Administrador</p>
-          </td>
-          <td>
-            <button type="button" class="btn btn-success" ng-click="setaDadosModalUser(usuario.id)">
-              Editar
-            </button>
-            <button type="button" class="btn btn-danger" ng-click="deletaDadosUser(usuario.id)">
-              Deletar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <ul class="nav nav-tabs">
+      <li class="nav-item"><a class="nav-link active" href="#usuarios" data-toggle="tab" role="tab" >Usuários</a></li>
+      <li class="nav-item"><a class="nav-link" href="#solicitacoes" data-toggle="tab" role="tab">Solicitações</a></li>
+      <li class="nav-item"><a class="nav-link" href="#doacoes" data-toggle="tab" role="tab">Doações</a></li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
+        <table class="table table-striped" style="margin-top:35px;">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nome</th>
+              <th scope="col">CPF</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Endereco</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="!usuarios">
+              <th colspan="8" style="text-align: center;">Não existem usuários cadastrados</th>
+            </tr>
+
+            <tr ng-if="usuarios" ng-repeat="usuario in usuarios">
+              <th scope="row">{{usuario.id}}</th>
+              <td>{{usuario.nome}}</td>
+              <td>{{usuario.cpf}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.telefone}}</td>
+              <td>{{usuario.endereco}}</td>
+              <td>
+                <p class="text-success" ng-if="usuario.tipo == 0">Doador</p>
+                <p class="text-info" ng-if="usuario.tipo == 1">Receptor</p>
+                <p class="text-danger" ng-if="usuario.tipo == 2">Administrador</p>
+              </td>
+              <td>
+                <button type="button" class="btn btn-success" ng-click="setaDadosModalUser(usuario.id)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="deletaDadosUser(usuario.id)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="solicitacoes" role="tabpanel">
+        <table class="table table-striped" style="margin-top:35px;">
+          <thead>
+            <tr>
+              <th scope="col">Doação</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Data</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="!solicitacoes">
+              <th colspan="7" style="text-align: center;">Não existem solicitações cadastradas</th>
+            </tr>
+
+            <tr ng-if="solicitacoes" ng-repeat="solicitacao in solicitacoes">
+              <th scope="row">{{solicitacao.doacaoId}}</th>
+              <td>{{solicitacao.tipo_doacao}}</td>
+              <td>{{solicitacao.data | date:'dd/MM/yyyy'}}</td>
+              <td>{{solicitacao.status}}</td>
+              <td>
+                <button type="button" class="btn btn-info" ng-click="confirmReceb(solicitacao.id, solicitacao)" style="margin-bottom:10px">
+                  Confirmar recebimento
+                </button>                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="doacoes" role="tabpanel">
+        <table class="table table-striped" style="margin-top:35px;">
+          <thead>
+            <tr>
+              <th scope="col">Doador</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Data</th>
+              <th scope="col">Local</th>
+              <th scope="col">Total</th>
+              <th scope="col">Resta</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="!doacoes">
+              <th colspan="7" style="text-align: center;">Não existem doações cadastradas</th>
+            </tr>
+
+            <tr ng-if="doacoes" ng-repeat="doacao in doacoes">
+              <th scope="row">{{doacao.doadorId}}</th>
+              <td>{{doacao.tipo_doacao}}</td>
+              <td>{{doacao.data | date:'dd/MM/yyyy'}}</td>
+              <td>{{doacao.local}}</td>
+              <td>{{doacao.quantidade_total}}</td>
+              <td>{{doacao.quantidade_restante}}</td>
+              <td>
+                <button type="button" class="btn btn-success" ng-click="setaDadosModal(doacao.id)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="deletaDados(doacao.id)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
       
     </div>
     <!-- Optional JavaScript -->
