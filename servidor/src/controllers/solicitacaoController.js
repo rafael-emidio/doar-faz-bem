@@ -131,15 +131,8 @@ module.exports = {
         if (status == null)
             return erro(req, res, "Não foi possível atualizar a solicitacao: status nulo ou vazio");
 
-
-        if (receptorId == '' || receptorId == null)
-            return erro(req, res, "Não foi possível atualizar a solicitacao: receptorId nulo ou vazio");
-
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível atualizar a solicitacao: tipo_doacao nulo ou vazio");
-
-        if (doacaoId == null)
-            return erro(req, res, "Não foi possível atualizar a solicitacao: doacaoId nulo ou vazio");
 
         tipo_doacao = verifyTipoDoacao(tipo_doacao)
         if (tipo_doacao == false)
@@ -166,18 +159,12 @@ module.exports = {
         if (status == null)
             return erro(req, res, "Não foi possível cadastrar a solicitacao: status nulo ou vazio");
 
-        if (receptorId == '' || receptorId == null)
-            return erro(req, res, "Não foi possível cadastrar a solicitacao: receptorId nulo ou vazio");
-
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível cadastrar a solicitacao: tipo_doacao nulo ou vazio");
 
         //tipo_doacao = verifyTipoDoacao(tipo_doacao)
         if (tipo_doacao != 'CESTA' && tipo_doacao != 'REMEDIO' && tipo_doacao != 'ROUPA')
             return erro(req, res, "Não foi possível cadastrar o usuário: tipo_doacao deve seguir o formato especificado (CESTA, REMEDIO, ROUPA)");
-
-        if (doacaoId == null)
-            return erro(req, res, "Não foi possível atualizar a solicitacao: doacaoId nulo ou vazio");
 
         const solicitacao = await Solicitacao.create({ tipo_doacao, data, status, receptorId, doacaoId })
 

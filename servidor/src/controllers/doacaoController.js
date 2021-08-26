@@ -79,9 +79,6 @@ module.exports = {
         if (local == '' || local == null)
             return erro(req, res, "Não foi possível atualizar a doacao: local nulo ou vazio");
 
-        if (doadorId == '' || doadorId == null)
-            return erro(req, res, "Não foi possível atualizar a doacao: doadorId nulo ou vazio");
-
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível atualizar a doacao: tipo_doacao nulo ou vazio");
 
@@ -113,9 +110,6 @@ module.exports = {
 
         if (local == '' || local == null)
             return erro(req, res, "Não foi possível cadastrar a doacao: local nulo ou vazio");
-
-        if (doadorId == '' || doadorId == null)
-            return erro(req, res, "Não foi possível cadastrar a doacao: doadorId nulo ou vazio");
 
         if (tipo_doacao == '' || tipo_doacao == null)
             return erro(req, res, "Não foi possível cadastrar a doacao: tipo_doacao nulo ou vazio");
